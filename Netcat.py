@@ -11,7 +11,7 @@ def execute(cmd):
     cmd = cmd.strip()
     if not cmd:
         return
-    output = subprocess.check_output(shlex.split(cmd), stderr=subprocess.stdout)
+    output = subprocess.check_output(shlex.split(cmd), stderr=subprocess.STDOUT)
     return output.decode()
 
 class NetCat:
@@ -99,7 +99,7 @@ if __name__ == '__main__':
         description='BHP Net Tool',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=textwrap.dedent('''Example:
-            netcat.py -t 192.168.1.108 -p 5555 -1 c # command shell
+            netcat.py -t 192.168.1.108 -p 5555 -1 -c # command shell
             netcat.py -t 192.168.1.108 -p 5555 -1 -u=mytest.txt # upload to file
             netcat.py -t 192.168.1.108 -p 5555 -1 -e=\"cat /etc/passwd\" # execute command
             echo 'ABD' | ./netcat.py -t 192.168.1.108 -p 135 # echo text to server port 135
