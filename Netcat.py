@@ -11,8 +11,10 @@ def execute(cmd):
     cmd = cmd.strip()
     if not cmd:
         return
-    output = subprocess.check_output(shlex.split(cmd), stderr=subprocess.STDOUT)
+    output = subprocess.check_output(shlex.split(cmd),
+                                     stderr=subprocess.STDOUT)
     return output.decode()
+
 
 class NetCat:
     def __init__(self, args, buffer=None):
@@ -50,13 +52,12 @@ class NetCat:
             self.socket.close()
             sys.exit()
     def listen(self):
+        print('listening')
         self.socket.bind((self.args.target, self.args.port))
         self.socket.listen(5)
         while True:
             client_socket, _ = self.socket.accept()
-            client_thread = threading.Thread(
-                target=self.handle, args=(client_socket,)
-            )
+            client_thread = threading.Thread(target=self.handle, args=(client_socket,))
             client_thread.start()
 
     def handle(self, client_socket):
@@ -94,6 +95,7 @@ class NetCat:
                     self.socket.close()
                     sys.exit()
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='BHP Net Tool',
@@ -117,6 +119,6 @@ if __name__ == '__main__':
     else:
         buffer = sys.stdin.read()
 
-    nc = NetCat(args, buffer.encode())
+    nc = NetCat(args, buffer.encode('utf=8'))
     nc.run()
 
